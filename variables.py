@@ -1,0 +1,14 @@
+car_transition_corrector_width=30
+car_transition_corrector_height=0
+widthofscreen, heightofscreen = 800,500
+gravels=[]
+score=0
+car_velocity_y = 0
+car_upward_jump = False
+start=True
+tree_speed=4
+start_right=755
+startleft=745
+illusion=True
+cloud_shifting=False
+shifting_magnitude=0 
