@@ -1,0 +1,12 @@
+c_l_l_x=47
+c_l_l_y=100
+c_u_l_x=47
+c_u_l_y=135
+c_u_r_x=108
+c_u_r_y=135
+c_l_r_x=108
+c_l_r_y=100
+t_l_l_x,t_l_l_y=719,100
+t_u_l_x,t_u_l_y=719,178
+t_u_r_x,t_u_r_y=774,178
+t_l_r_x,t_l_r_y=774,100 
