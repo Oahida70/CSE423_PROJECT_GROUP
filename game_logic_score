@@ -1,0 +1,97 @@
+collected_powerups = [False, False, False, False, False, False]
+
+collected_count = 0
+
+game_over = False
+
+def update():
+    global obstacle_speed, tree_bottom_left_x, tree_top_left_x, tree_top_right_x, tree_bottom_right_x, tree_top_right_y, car_bottom_left_x, car_bottom_left_y
+
+    global car_bottom_right_x, car_bottom_right_y, car_top_left_x, car_top_left_y, car_top_right_x, car_top_right_y, score_points, gamestart, is_tree_or_power_up, powerup_score, collected_powerups, collected_count, game_over
+    
+    global powerup_score 
+
+    if is_tree_or_power_up == True:
+
+        if gamestart == True:
+
+            if obstacle_speed >= 750:
+
+                obstacle_speed = 4
+
+                tree_bottom_left_x, tree_bottom_left_y = 719, 100
+
+                tree_top_left_x, tree_top_left_y = 719, 178
+
+                tree_top_right_x, tree_top_right_y = 774, 178
+
+                tree_bottom_right_x, tree_bottom_right_y = 774, 100
+
+                is_tree_or_power_up = not is_tree_or_power_up
+
+            obstacle_speed += 4
+
+            tree_bottom_left_x -= 4
+
+            tree_top_left_x -= 4
+
+            tree_top_right_x -= 4
+
+            tree_bottom_right_x -= 4
+
+            if ((car_bottom_left_x <= tree_bottom_left_x <= car_bottom_right_x) or (car_bottom_left_x <= tree_bottom_right_x <= car_bottom_right_x)) and (car_bottom_right_y >= tree_top_right_y):
+
+                score_points += 1
+
+                if score_points % 29 == 0:
+
+                    print(int(score_points / 29))
+
+            elif ((car_bottom_left_x <= tree_bottom_left_x <= car_bottom_right_x) or (car_bottom_left_x <= tree_bottom_right_x <= car_bottom_right_x)) and (car_bottom_right_y <= tree_top_right_y):
+
+                print("Game Over")
+
+                game_over = True
+
+                gamestart = False
+    else:
+        global speed_of_power, item1_x, item1_y, item2_x, item2_y, item3_x, item3_y, item4_x, item4_y, item5_x, item5_y, item6_x, item6_y
+        
+        if gamestart == True:
+
+           
+            item_positions = [item1_x, item2_x, item3_x, item4_x, item5_x, item6_x]
+
+            for i in range(6):
+
+                item_positions[i] -= speed_of_power
+
+               
+                if ((car_bottom_left_x <= item_positions[i] <= car_bottom_right_x) and not collected_powerups[i]):
+
+                    collected_powerups[i] = True
+
+                    collected_count += 1
+
+            item1_x, item2_x, item3_x, item4_x, item5_x, item6_x = item_positions
+
+            
+            if collected_count == 6:
+
+                powerup_score += 5
+
+                collected_count = 0  
+
+                print("Power-up score:", powerup_score, "points")
+        
+        if item6_x < 0 or item1_x < 0:
+            item1_x = 700
+            item2_x = 730
+            item3_x = 730
+            item4_x = 760
+            item5_x = 769
+            item6_x = 790
+            is_tree_or_power_up = not is_tree_or_power_up
+            collected_powerups = [False, False, False, False, False, False]  
+            collected_count = 0  # Reset the count
+
