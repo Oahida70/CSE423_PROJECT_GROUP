@@ -3,8 +3,7 @@ to avoid obstacles like trees, collects power-ups, and earns points by following
 
 
 
-Features: 
-
+Features are listed below: 
 Jump Mechanism: The car follows a realistic physics-based jump trajectory with gravity effects.
                 Obstacle Avoidance: Avoid hitting trees by jumping over them.
                 Collision detection determines if the game ends.
