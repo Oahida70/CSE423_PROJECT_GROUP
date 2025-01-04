@@ -589,38 +589,6 @@ def draw_moon():
         glVertex2f(x, y)
     glEnd()
 
-def draw_star(center_x, center_y, size):
-    glColor3f(1.0, 1.0, 0.8)  # Warm white color for the stars
-    glBegin(GL_TRIANGLE_FAN)
-
-    # Outer and inner radii
-    outer_radius = size
-    inner_radius = size / 2.5
-    num_points = 10  # 5 outer points + 5 inner points
-
-    for i in range(num_points + 1):  # Loop back to the starting point
-        angle = math.radians(i * 360 / num_points)
-        if i % 2 == 0:  # Outer point
-            x = center_x + outer_radius * math.cos(angle)
-            y = center_y + outer_radius * math.sin(angle)
-        else:  # Inner point
-            x = center_x + inner_radius * math.cos(angle)
-            y = center_y + inner_radius * math.sin(angle)
-        glVertex2f(x, y)
-
-    glEnd()
-
-
-def draw_stars():
-    glColor3f(1.0, 1.0, 0.8)  # Slightly warm white
-    for _ in range(random.randint(1, 2)):  # Show few stars
-        center_x = random.randint(100, 700)  # Horizontal range
-        center_y = random.randint(440, 500)  # Vertical range
-        size = random.randint(10, 20)  # Random size
-        draw_star(center_x, center_y, size)
-
-
-
 def draw_loading_bar():
     global loading_bar_height, loading_bar_progress
 
@@ -689,7 +657,6 @@ def render_jump_score():
 
 # Display
 def display():
-
     global vehicle_trans_width, vehicle_trans_height, vehicle_velocity, jump_mechanism, car_bottom_left_y, car_top_left_y, car_top_right_y, car_bottom_right_y, game_over, background_color, health, angle
 
     glClearColor(*background_color) 
@@ -736,16 +703,10 @@ def display():
 
     if is_night == True:
         draw_moon()
-        draw_stars()
     
     if game_over:
         render_text("Game Over", WIDTH / 2 - 50, HEIGHT / 2)
     glutSwapBuffers()
-
-
-
-
-
 
 glutInit()
 glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE)

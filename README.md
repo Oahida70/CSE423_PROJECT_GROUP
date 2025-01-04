@@ -1,16 +1,12 @@
 Jumping Car Adventure is a 2D OpenGL-based game where the player controls a car that jumps 
-to avoid obstacles like trees, collects power-ups, and earns points by following a zigzag path.
-
-
+to avoid obstacles like trees, collects power-ups, and earns points by following a path.
 
 Features are listed below: 
 Jump Mechanism: The car follows a realistic physics-based jump trajectory with gravity effects.
                 Obstacle Avoidance: Avoid hitting trees by jumping over them.
                 Collision detection determines if the game ends.
 
-
-Power-Up Collection: Collect power-ups for score. Power-up score increases by 5 points. 
-
+Power-Up Collection: Collect power-ups (Bouncing ball) for score. Power-up score increases by 5 points. The longer you can collide with the bouncing ball, the more points you get.
 
 Dynamic Background and Display: Press d to switch to day mode and n to night mode.
                                 Press p to pause the game and s to resume.
