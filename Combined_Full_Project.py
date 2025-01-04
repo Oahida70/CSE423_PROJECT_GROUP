@@ -171,10 +171,6 @@ def trees():
         draw_line_mpl(item5_x, item5_y, item6_x, item6_y, (1, 0, 0))
 
 
-
-
-
-
 # Bouncing Ball
 def draw_ball():
     global ball_x, ball_y, ball_radius
@@ -184,8 +180,6 @@ def draw_ball():
         midpoint_circle(ball_x, ball_y, i)
     glEnd()
 
-
-
 def update_ball():
     global ball_x, ball_y, ball_velocity_x, ball_velocity_y, ball_radius, HEIGHT, WIDTH, car_bottom_left_x, car_bottom_right_x, car_bottom_left_y, car_top_left_y, car_top_right_x, car_bottom_right_y
     global powerup_score
@@ -193,41 +187,26 @@ def update_ball():
     ball_x += ball_velocity_x
     ball_y += ball_velocity_y
 
-   
     if ball_y - ball_radius <= 0:
         ball_y = ball_radius
         ball_velocity_y *= -1  
 
-    
     if ball_y + ball_radius >= HEIGHT:
         ball_y = HEIGHT - ball_radius
         ball_velocity_y *= -1
 
-   
     if ball_x - ball_radius <= 0 or ball_x + ball_radius >= WIDTH:
         ball_velocity_x *= -1
-
-
 
     if (car_bottom_left_x <= ball_x <= car_bottom_right_x) and (car_bottom_left_y <= ball_y <= car_top_left_y):
         ball_velocity_y *= -1  # Reverse vertical velocity
         ball_y = car_top_left_y + ball_radius
         ball_velocity_y *= +1  
-        #powerup_score += 10 # Increase power-up points 
-
-
+        powerup_score += 2 # Increase power-up points 
+        
     if (tree_bottom_left_x <= ball_x <= tree_bottom_right_x) and (tree_bottom_left_y <= ball_y <= tree_top_left_y):
         ball_velocity_y *= -1
         ball_y = tree_top_left_y + ball_radius
-
-
-
-
-
-
-
-
-
 
 # Cloud
 def clouds():
@@ -252,9 +231,6 @@ def clouds():
     cloud_shift_amount -= 0.5
     if cloud_shift_amount < -WIDTH:
         cloud_shift_amount = WIDTH 
-
-
-
 
 
 # Birds
@@ -306,16 +282,6 @@ def move_birds():
 
 
 
-
-
-
-
-    
-
-
-
-
-
 # Algorithms
 
 
@@ -329,9 +295,6 @@ def circle_points(point_x, point_y, center_x, center_y):
     glVertex2f(-point_y + center_x, -point_x + center_y)
     glVertex2f(-point_y + center_x, point_x + center_y)
     glVertex2f(-point_x + center_x, point_y + center_y)
-
-
-
 
 
 def midpoint_circle(center_x, center_y, radius):
@@ -454,9 +417,6 @@ def draw_line_mpl(x1, y1, x2, y2, color):
 
 
 
-
-
-
 # Game Logic
 
 
@@ -470,82 +430,48 @@ game_over = False
 
 def update():
     global obstacle_speed, tree_bottom_left_x, tree_top_left_x, tree_top_right_x, tree_bottom_right_x, tree_top_right_y, car_bottom_left_x, car_bottom_left_y
-
     global car_bottom_right_x, car_bottom_right_y, car_top_left_x, car_top_left_y, car_top_right_x, car_top_right_y, score_points, gamestart, is_tree_or_power_up, powerup_score, collected_powerups, collected_count, game_over
-    
     global powerup_score 
 
     if is_tree_or_power_up == True:
-
         if gamestart == True:
-
             if obstacle_speed >= 750:
-
                 obstacle_speed = 4
-
                 tree_bottom_left_x, tree_bottom_left_y = 719, 100
-
                 tree_top_left_x, tree_top_left_y = 719, 178
-
                 tree_top_right_x, tree_top_right_y = 774, 178
-
                 tree_bottom_right_x, tree_bottom_right_y = 774, 100
-
                 is_tree_or_power_up = not is_tree_or_power_up
 
             obstacle_speed += 4
-
             tree_bottom_left_x -= 4
-
             tree_top_left_x -= 4
-
             tree_top_right_x -= 4
-
             tree_bottom_right_x -= 4
 
             if ((car_bottom_left_x <= tree_bottom_left_x <= car_bottom_right_x) or (car_bottom_left_x <= tree_bottom_right_x <= car_bottom_right_x)) and (car_bottom_right_y >= tree_top_right_y):
-
                 score_points += 1
-
                 if score_points % 29 == 0:
-
                     print(int(score_points / 29))
 
             elif ((car_bottom_left_x <= tree_bottom_left_x <= car_bottom_right_x) or (car_bottom_left_x <= tree_bottom_right_x <= car_bottom_right_x)) and (car_bottom_right_y <= tree_top_right_y):
-
                 print("Game Over")
-
-
                 game_over = True
-
                 gamestart = False
+                
     else:
         global speed_of_power, item1_x, item1_y, item2_x, item2_y, item3_x, item3_y, item4_x, item4_y, item5_x, item5_y, item6_x, item6_y
-        
         if gamestart == True:
-
-           
             item_positions = [item1_x, item2_x, item3_x, item4_x, item5_x, item6_x]
-
             for i in range(6):
-
                 item_positions[i] -= speed_of_power
-
                 if ((car_bottom_left_x <= item_positions[i] <= car_bottom_right_x) and not collected_powerups[i] and (car_bottom_left_y <= item_positions[i] <= car_top_left_y)):
-
                     collected_powerups[i] = True
-
                     collected_count += 1
-
-            item1_x, item2_x, item3_x, item4_x, item5_x, item6_x = item_positions
-
-            
+            item1_x, item2_x, item3_x, item4_x, item5_x, item6_x = item_positions    
             if collected_count == 6:
-
                 powerup_score += 5
-
                 collected_count = 0  
-
                 print("Power-up score:", powerup_score, "points")
         
         if item6_x < 0 or item1_x < 0:
@@ -558,11 +484,6 @@ def update():
             is_tree_or_power_up = not is_tree_or_power_up
             collected_powerups = [False, False, False, False, False, False]  
             collected_count = 0  # Reset the count
-
-
-
-
-
 
 
 #Day Night Transition
@@ -585,7 +506,6 @@ def update_background_color(target_color):
                 background_color[i] = target_color[i]
 
 
-
 # Game Display
 
 game_paused = False
@@ -600,6 +520,7 @@ def keyboard(key, x, y):
     if key == b' ' and not jump_mechanism and not game_paused:
         jump_mechanism = True
         vehicle_velocity = 9  
+        
     elif key == b'd':
         transitioning_to_day = True  # Start the transition to day color
         transitioning_to_night = False
@@ -614,6 +535,7 @@ def keyboard(key, x, y):
         
     elif key == b'p':
         game_paused = True  # Pause the game
+        
     elif key == b's':
         game_paused = False  # Resume the game
 
@@ -667,15 +589,36 @@ def draw_moon():
         glVertex2f(x, y)
     glEnd()
 
-def draw_stars():
-    glColor3f(1.0, 1.0, 1.0)  # White color for stars
-    glPointSize(2)  # Small dots for stars
-    glBegin(GL_POINTS)
-    for _ in range(100):  # Number of stars
-        x = random.randint(0, 800)  # Random x position within window width
-        y = random.randint(300, 600)  # Random y position within window height
+def draw_star(center_x, center_y, size):
+    glColor3f(1.0, 1.0, 0.8)  # Warm white color for the stars
+    glBegin(GL_TRIANGLE_FAN)
+
+    # Outer and inner radii
+    outer_radius = size
+    inner_radius = size / 2.5
+    num_points = 10  # 5 outer points + 5 inner points
+
+    for i in range(num_points + 1):  # Loop back to the starting point
+        angle = math.radians(i * 360 / num_points)
+        if i % 2 == 0:  # Outer point
+            x = center_x + outer_radius * math.cos(angle)
+            y = center_y + outer_radius * math.sin(angle)
+        else:  # Inner point
+            x = center_x + inner_radius * math.cos(angle)
+            y = center_y + inner_radius * math.sin(angle)
         glVertex2f(x, y)
+
     glEnd()
+
+
+def draw_stars():
+    glColor3f(1.0, 1.0, 0.8)  # Slightly warm white
+    for _ in range(random.randint(1, 2)):  # Show few stars
+        center_x = random.randint(100, 700)  # Horizontal range
+        center_y = random.randint(440, 500)  # Vertical range
+        size = random.randint(10, 20)  # Random size
+        draw_star(center_x, center_y, size)
+
 
 
 def draw_loading_bar():
