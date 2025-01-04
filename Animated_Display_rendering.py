@@ -1,12 +1,44 @@
+#Day Night Transition
+
+
+day_color = [0.53, 0.81, 0.92, 1.0]  # Sky blue (day)
+night_color = [0.0, 0.0, 0.0, 1.0]  # Black (night)
+transition_speed = 0.01  # Speed of color transition
+transitioning_to_day = False
+transitioning_to_night = False
+
+def update_background_color(target_color):
+    global background_color, transition_speed
+    for i in range(3):  
+        if background_color[i] < target_color[i]:
+            background_color[i] += transition_speed
+            if background_color[i] > target_color[i]:
+                background_color[i] = target_color[i]
+        elif background_color[i] > target_color[i]:
+            background_color[i] -= transition_speed
+            if background_color[i] < target_color[i]:
+                background_color[i] = target_color[i]
+
+
+
+# Game Display
+
 game_paused = False
 
-def keyboard(key, x, y):
-    global background_color, game_paused
 
-    if key == b'd':
-        background_color = [0.53, 0.81, 0.92, 1.0]  # Sky blue
+def keyboard(key, x, y):
+    global vehicle_trans_height, vehicle_velocity, jump_mechanism, background_color, game_paused
+    global transitioning_to_day, transitioning_to_night, day_color, night_color
+
+    if key == b' ' and not jump_mechanism and not game_paused:
+        jump_mechanism = True
+        vehicle_velocity = 9  
+    elif key == b'd':
+        transitioning_to_day = True  # Start the transition to day color
+        transitioning_to_night = False
     elif key == b'n':
-        background_color = [0.0, 0.0, 0.0, 1.0]  # Night color
+        transitioning_to_night = True  # Start the transition to night color
+        transitioning_to_day = False
     elif key == b'p':
         game_paused = True  # Pause the game
     elif key == b's':
@@ -14,8 +46,19 @@ def keyboard(key, x, y):
 
 
 
+
+
 def animation():
+    global transitioning_to_day, transitioning_to_night, day_color, night_color
     if not game_paused:
+        if transitioning_to_day:
+            update_background_color(day_color)
+            if background_color == day_color:
+                transitioning_to_day = False
+        elif transitioning_to_night:
+            update_background_color(night_color)
+            if background_color == night_color:
+                transitioning_to_night = False
         glutPostRedisplay()
 
 
