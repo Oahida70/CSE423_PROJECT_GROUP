@@ -1,4 +1,5 @@
-
+Jumping Car Adventure is a 2D OpenGL-based game where the player controls a car that jumps 
+to avoid obstacles like trees, collects power-ups, and earns points by following a zigzag path.
 Features: 
 
 Jump Mechanism: The car follows a realistic physics-based jump trajectory with gravity effects.
