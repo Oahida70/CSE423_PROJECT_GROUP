@@ -50,13 +50,13 @@ powerup_score = 0
 # Day /night transition
 
 is_day = False
-is_night = False
+is_night = True
 
 
 # Loading bar
 
 loading_bar_height = 0  # Initial height of the loading bar
-loading_bar_max_height = 50  # Maximum height for the loading bar
+loading_bar_max_height = 250  # Maximum height for the loading bar
 loading_bar_width = 200  # Width of the loading bar
 loading_bar_x = 300  # X-coordinate for the bar's left edge
 loading_bar_y = 50  # Y-coordinate for the bar's bottom edge
@@ -637,6 +637,47 @@ def draw_sun():
     
     glEnd()
 
+def draw_moon():
+    # Moon center and radius
+    moon_center_x = 600
+    moon_center_y = 400
+    moon_radius = 50
+    
+    # Colors
+    moon_color = (0.9, 0.9, 0.9)  # Light gray for the main moon
+    shadow_color = (0, 0, 0)  # Dark shadow for the crescent effect
+
+    # Draw the full moon
+    glColor3f(*moon_color)
+    glBegin(GL_POLYGON)
+    for angle in range(0, 360, 5):
+        rad = math.radians(angle)
+        x = moon_center_x + moon_radius * math.cos(rad)
+        y = moon_center_y + moon_radius * math.sin(rad)
+        glVertex2f(x, y)
+    glEnd()
+
+    # Draw the shadow (to create the crescent shape)
+    glColor3f(*shadow_color)
+    glBegin(GL_POLYGON)
+    for angle in range(0, 360, 5):
+        rad = math.radians(angle)
+        x = moon_center_x + moon_radius * 0.8 * math.cos(rad) - 15  # Slight offset for crescent
+        y = moon_center_y + moon_radius * 0.8 * math.sin(rad)
+        glVertex2f(x, y)
+    glEnd()
+
+def draw_stars():
+    glColor3f(1.0, 1.0, 1.0)  # White color for stars
+    glPointSize(2)  # Small dots for stars
+    glBegin(GL_POINTS)
+    for _ in range(100):  # Number of stars
+        x = random.randint(0, 800)  # Random x position within window width
+        y = random.randint(300, 600)  # Random y position within window height
+        glVertex2f(x, y)
+    glEnd()
+
+
 def draw_loading_bar():
     global loading_bar_height, loading_bar_progress
 
@@ -746,12 +787,14 @@ def display():
     
     if transitioning_to_day == True:
          draw_loading_bar()  # Draw the loading bar
-    elif transitioning_to_night == True:
-        draw_loading_bar()  # Draw the loading bar
 
     if is_day == True:
         draw_sun()
 
+    if is_night == True:
+        draw_moon()
+        draw_stars()
+    
     if game_over:
         render_text("Game Over", WIDTH / 2 - 50, HEIGHT / 2)
     glutSwapBuffers()
