@@ -4,7 +4,7 @@ from OpenGL.GLUT import *
 import random
 import math
 
-# Initializing all variables.
+# Initializing all variables
 vehicle_trans_width = 30
 
 vehicle_trans_height = 0
@@ -47,6 +47,20 @@ ball_velocity_x, ball_velocity_y = 3, -2
 
 powerup_score = 0
 
+# Day /night transition
+
+is_day = False
+is_night = False
+
+
+# Loading bar
+
+loading_bar_height = 0  # Initial height of the loading bar
+loading_bar_max_height = 50  # Maximum height for the loading bar
+loading_bar_width = 200  # Width of the loading bar
+loading_bar_x = 300  # X-coordinate for the bar's left edge
+loading_bar_y = 50  # Y-coordinate for the bar's bottom edge
+loading_bar_progress = True  # Toggle for loading progress
 
 
 
@@ -164,7 +178,7 @@ def trees():
 # Bouncing Ball
 def draw_ball():
     global ball_x, ball_y, ball_radius
-    glColor3f(1, 1, 1)
+    glColor3f(1, 0, 0)  # Red color for the ball
     glBegin(GL_POINTS)
     for i in range(ball_radius):
         midpoint_circle(ball_x, ball_y, i)
@@ -580,28 +594,71 @@ game_paused = False
 def keyboard(key, x, y):
     global vehicle_trans_height, vehicle_velocity, jump_mechanism, background_color, game_paused
     global transitioning_to_day, transitioning_to_night, day_color, night_color
-    
+    global is_day, is_night
+
     # Implementation of jump mechanism
     if key == b' ' and not jump_mechanism and not game_paused:
         jump_mechanism = True
         vehicle_velocity = 9  
-    
     elif key == b'd':
         transitioning_to_day = True  # Start the transition to day color
         transitioning_to_night = False
+        is_day = True
+        is_night = False
         
     elif key == b'n':
         transitioning_to_night = True  # Start the transition to night color
         transitioning_to_day = False
+        is_night = True
+        is_day = False
         
     elif key == b'p':
         game_paused = True  # Pause the game
-        
     elif key == b's':
         game_paused = False  # Resume the game
 
 
 
+def draw_sun():
+    glColor3f(1.0, 1.0, 0.0)  # Bright yellow color for the sun
+    glBegin(GL_POLYGON)
+    
+    # Center of the sun
+    sun_center_x = 700  # Adjust for your scene's coordinates
+    sun_center_y = 400
+    sun_radius = 50
+    
+    # Draw the circle using small line segments
+    for angle in range(0, 360, 5):  # Increment in small steps for smoothness
+        rad = math.radians(angle)
+        x = sun_center_x + sun_radius * math.cos(rad)
+        y = sun_center_y + sun_radius * math.sin(rad)
+        glVertex2f(x, y)
+    
+    glEnd()
+
+def draw_loading_bar():
+    global loading_bar_height, loading_bar_progress
+
+    if not loading_bar_progress:
+        return  # Skip drawing if loading is complete
+
+    glColor3f(0.0, 1.0, 0.0)  # Bright green for the loading bar
+    glBegin(GL_QUADS)
+    
+    # Draw the loading bar as a rectangle
+    glVertex2f(loading_bar_x, loading_bar_y)  # Bottom-left corner
+    glVertex2f(loading_bar_x + loading_bar_width, loading_bar_y)  # Bottom-right corner
+    glVertex2f(loading_bar_x + loading_bar_width, loading_bar_y + loading_bar_height)  # Top-right corner
+    glVertex2f(loading_bar_x, loading_bar_y + loading_bar_height)  # Top-left corner
+    
+    glEnd()
+
+    # Update the loading bar height for progress
+    if loading_bar_progress:
+        loading_bar_height += 1  # Adjust the increment for speed
+        if loading_bar_height >= loading_bar_max_height:
+            loading_bar_progress = False  # Stop when max height is reached
 
 
 def animation():
@@ -686,6 +743,14 @@ def display():
     update_ball()  
     render_powerup_score()  
     render_jump_score()
+    
+    if transitioning_to_day == True:
+         draw_loading_bar()  # Draw the loading bar
+    elif transitioning_to_night == True:
+        draw_loading_bar()  # Draw the loading bar
+
+    if is_day == True:
+        draw_sun()
 
     if game_over:
         render_text("Game Over", WIDTH / 2 - 50, HEIGHT / 2)
