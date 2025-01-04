@@ -589,28 +589,6 @@ def draw_moon():
         glVertex2f(x, y)
     glEnd()
 
-def draw_loading_bar():
-    global loading_bar_height, loading_bar_progress
-
-    if not loading_bar_progress:
-        return  # Skip drawing if loading is complete
-
-    glColor3f(0.0, 1.0, 0.0)  # Bright green for the loading bar
-    glBegin(GL_QUADS)
-    
-    # Draw the loading bar as a rectangle
-    glVertex2f(loading_bar_x, loading_bar_y)  # Bottom-left corner
-    glVertex2f(loading_bar_x + loading_bar_width, loading_bar_y)  # Bottom-right corner
-    glVertex2f(loading_bar_x + loading_bar_width, loading_bar_y + loading_bar_height)  # Top-right corner
-    glVertex2f(loading_bar_x, loading_bar_y + loading_bar_height)  # Top-left corner
-    
-    glEnd()
-
-    # Update the loading bar height for progress
-    if loading_bar_progress:
-        loading_bar_height += 1  # Adjust the increment for speed
-        if loading_bar_height >= loading_bar_max_height:
-            loading_bar_progress = False  # Stop when max height is reached
 
 
 def animation():
@@ -695,8 +673,8 @@ def display():
     render_powerup_score()  
     render_jump_score()
     
-    if transitioning_to_day == True:
-         draw_loading_bar()  # Draw the loading bar
+    # if transitioning_to_day == True:
+    #      draw_loading_bar()  # Draw the loading bar
 
     if is_day == True:
         draw_sun()
