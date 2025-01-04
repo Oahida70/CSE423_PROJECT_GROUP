@@ -1,3 +1,58 @@
+def circle_points(point_x, point_y, center_x, center_y):
+    glVertex2f(point_x + center_x, point_y + center_y)
+    glVertex2f(point_y + center_x, point_x + center_y)
+    glVertex2f(point_y + center_x, -point_x + center_y)
+    glVertex2f(point_x + center_x, -point_y + center_y)
+    glVertex2f(-point_x + center_x, -point_y + center_y)
+    glVertex2f(-point_y + center_x, -point_x + center_y)
+    glVertex2f(-point_y + center_x, point_x + center_y)
+    glVertex2f(-point_x + center_x, point_y + center_y)
+
+
+
+
+
+def midpoint_circle(center_x, center_y, radius):
+    decision_param = 1 - radius
+    current_x = 0
+    current_y = radius
+    circle_points(current_x, current_y, center_x, center_y)
+    while current_x < current_y:
+        if decision_param < 0:
+            decision_param = decision_param + 2 * current_x + 3
+        else:
+            decision_param = decision_param + 2 * (current_x - current_y) + 5
+            current_y = current_y - 1
+        current_x = current_x + 1
+        circle_points(current_x, current_y, center_x, center_y)
+
+def draw_line_mpl(x1, y1, x2, y2, color):
+    glColor3f(*color)
+    
+    dx = x2 - x1
+    dy = y2 - y1
+    
+    d = dy - (dx / 2)
+    x = x1
+    y = y1
+
+    glBegin(GL_POINTS)
+    glVertex2f(x, y)
+    
+    while x < x2:
+        x += 1
+        if d < 0:
+            d = d + dy
+        else:
+            y += 1
+            d = d + (dy - dx)
+        glVertex2f(x, y)
+    glEnd()
+
+
+
+
+
 def draw_line_mpl(x1, y1, x2, y2, color):
     glColor3f(*color)
     
@@ -36,30 +91,3 @@ def draw_line_mpl(x1, y1, x2, y2, color):
 
 
 
-def circle_points(point_x, point_y, center_x, center_y):
-    glVertex2f(point_x + center_x, point_y + center_y)
-    glVertex2f(point_y + center_x, point_x + center_y)
-    glVertex2f(point_y + center_x, -point_x + center_y)
-    glVertex2f(point_x + center_x, -point_y + center_y)
-    glVertex2f(-point_x + center_x, -point_y + center_y)
-    glVertex2f(-point_y + center_x, -point_x + center_y)
-    glVertex2f(-point_y + center_x, point_x + center_y)
-    glVertex2f(-point_x + center_x, point_y + center_y)
-
-
-
-
-
-def midpoint_circle(center_x, center_y, radius):
-    decision_param = 1 - radius
-    current_x = 0
-    current_y = radius
-    circle_points(current_x, current_y, center_x, center_y)
-    while current_x < current_y:
-        if decision_param < 0:
-            decision_param = decision_param + 2 * current_x + 3
-        else:
-            decision_param = decision_param + 2 * (current_x - current_y) + 5
-            current_y = current_y - 1
-        current_x = current_x + 1
-        circle_points(current_x, current_y, center_x, center_y)
